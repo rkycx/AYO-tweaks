@@ -31,10 +31,10 @@ public class MainWindow : Window, IDisposable
     {
         ImGui.Text($"Settings");
         
-        var supressSnap = Configuration.disableSnap;
+        var supressSnap = Configuration.DisableSnap;
         if (ImGui.Checkbox("Disable sleep snap", ref supressSnap))
         {
-            Configuration.disableSnap = supressSnap;
+            Configuration.DisableSnap = supressSnap;
             Configuration.Save();
         }
         

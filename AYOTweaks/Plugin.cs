@@ -27,7 +27,7 @@ public unsafe sealed class Plugin : IDalamudPlugin
     public readonly WindowSystem WindowSystem = new("AYOTweaks");
     private MainWindow MainWindow { get; init; }
     private delegate byte ShouldSnap(Character* a1, SnapPosition* a2);
-    private byte ShouldSnapDetour(Character* a1, SnapPosition* a2) => (byte) (Configuration.disableSnap ? 0 : ShouldSnapHook!.Original(a1, a2));
+    private byte ShouldSnapDetour(Character* a1, SnapPosition* a2) => (byte) (Configuration.DisableSnap ? 0 : ShouldSnapHook!.Original(a1, a2));
     [Signature("E8 ?? ?? ?? ?? 84 C0 0F 84 ?? ?? ?? ?? 4C 8D 74 24", DetourName = nameof(ShouldSnapDetour))]
     private Hook<ShouldSnap>? ShouldSnapHook { get; init; } = null;
     [StructLayout(LayoutKind.Explicit, Size = 0x38)]

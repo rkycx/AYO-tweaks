@@ -8,7 +8,7 @@ namespace AYOTweaks;
 public class Configuration : IPluginConfiguration
 {
     public int Version { get; set; } = 0;
-    public bool disableSnap { get; set; } = true;
+    public bool DisableSnap { get; set; } = true;
     public void Save()
     {
         Plugin.PluginInterface.SavePluginConfig(this);

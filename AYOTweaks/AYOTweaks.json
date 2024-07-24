@@ -1,12 +1,14 @@
 {
-  "Author": "rky",
-  "Name": "AYO tweaks",
-  "Punchline": "How many braincells do you think are enough braincells?",
-  "Description": "Mainly a fuck around plogon I wanted to create.. No warranty and by installing you've already agreed with the ToS. Gib gil",
-  "ApplicableVersion": "any",
-  "Tags": [
-    "AYO",
-    "plogon",
-    "rky"
-  ]
+    "Author": "rky",
+    "Name": "AYO tweaks",
+    "RepoUrl": "https://github.com/rkycx/AYO-tweaks",
+    "IconUrl": "https://raw.githubusercontent.com/rkycx/plogons/main/icons/ayo.png",
+    "Punchline": "How many braincells do you think are enough braincells?",
+    "Description": "Mainly a fuck around plogon I wanted to create.. No warranty and by installing you've already agreed with the ToS. Gib gil",
+    "ApplicableVersion": "any",
+    "Tags": [
+        "AYO",
+        "plogon",
+        "rky"
+    ]
 }
