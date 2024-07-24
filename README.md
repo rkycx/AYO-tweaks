@@ -3,8 +3,10 @@ Plogon I made to learn with. Be wary of shit code :poop:
 >**/payo** >   
 > for settings
 
->**/asleep** >   
+>**/asleep**
+>   
 >for sleep
 
->**/asit** >   
+>**/asit**
+>   
 >for sit
