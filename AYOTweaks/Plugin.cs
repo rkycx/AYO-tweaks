@@ -1,12 +1,12 @@
-﻿using Dalamud.Game.Command;
-using Dalamud.IoC;
-using Dalamud.Plugin;
+﻿using AYOTweaks.Windows;
 using System.IO;
 using System.Runtime.InteropServices;
+using Dalamud.Game.Command;
+using Dalamud.Plugin;
 using Dalamud.Interface.Windowing;
-using Dalamud.Plugin.Services;
-using AYOTweaks.Windows;
 using Dalamud.Hooking;
+using Dalamud.IoC;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
@@ -14,18 +14,21 @@ using FFXIVClientStructs.FFXIV.Common.Math;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 
 namespace AYOTweaks;
-
 public unsafe sealed class Plugin : IDalamudPlugin
 {
     [PluginService] internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
-    [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
+    [PluginService] internal static IGameInteropProvider GameInteropProvider { get; private set; } = null!;
     [PluginService] internal static ICommandManager CommandManager { get; private set; } = null!;
-    [PluginService] public static IGameInteropProvider GameInteropProvider { get; private set; } = null!;
-    
+    [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
     public Configuration Configuration { get; init; }
 
     public readonly WindowSystem WindowSystem = new("AYOTweaks");
     private MainWindow MainWindow { get; init; }
+    
+    
+    //:B: meme stuff
+    
+    //Sleep stuff
     private delegate byte ShouldSnap(Character* a1, SnapPosition* a2);
     private byte ShouldSnapDetour(Character* a1, SnapPosition* a2) => (byte) (Configuration.DisableSnap ? 0 : ShouldSnapHook!.Original(a1, a2));
     [Signature("E8 ?? ?? ?? ?? 84 C0 0F 84 ?? ?? ?? ?? 4C 8D 74 24", DetourName = nameof(ShouldSnapDetour))]
@@ -44,21 +47,24 @@ public unsafe sealed class Plugin : IDalamudPlugin
         [FieldOffset(0x30)]
         public float RotationB;
     }
+    
+    //Plogon
     public Plugin()
     {
+        Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        
+        //Sleep
         GameInteropProvider.InitializeFromAttributes(this);
         ShouldSnapHook?.Enable();
-        
-        Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
         var memImagePath = Path.Combine(PluginInterface.AssemblyLocation.Directory?.FullName!, "mem.png");
         
         MainWindow = new MainWindow(this, memImagePath);
         WindowSystem.AddWindow(MainWindow);
         
-        CommandManager.AddHandler("/payo", new CommandInfo(OnCommand)
+        CommandManager.AddHandler("/ayo", new CommandInfo(OnCommand)
         {
-            HelpMessage = "Settings"
+            HelpMessage = "Open settings menu"
         });
         CommandManager.AddHandler("/asleep", new CommandInfo(OnCommand)
         {
@@ -70,16 +76,19 @@ public unsafe sealed class Plugin : IDalamudPlugin
         });
         PluginInterface.UiBuilder.Draw += DrawUI;
         PluginInterface.UiBuilder.OpenMainUi += ToggleMainUI;
+        
+        
     }
     public void Dispose()
     {
         WindowSystem.RemoveAllWindows();
         
         MainWindow.Dispose();
-        
+
+        ShouldSnapHook?.Disable();
         ShouldSnapHook?.Dispose();
         
-        CommandManager.RemoveHandler("/payo");
+        CommandManager.RemoveHandler("/ayo");
         CommandManager.RemoveHandler("/asleep");
         CommandManager.RemoveHandler("/asit");
     }
@@ -87,7 +96,7 @@ public unsafe sealed class Plugin : IDalamudPlugin
     {
         switch (command)
         {
-            case "/payo":
+            case "/ayo":
                 ToggleMainUI();
                 break;
             case "/asit":
@@ -98,7 +107,7 @@ public unsafe sealed class Plugin : IDalamudPlugin
                 break;
         }
     }
-    public unsafe void ExecuteEmote(ushort emoteId)
+    private unsafe void ExecuteEmote(ushort emoteId)
     {
         var playEmoteOption = new EmoteController.PlayEmoteOption
         {

@@ -7,22 +7,20 @@ namespace AYOTweaks.Windows;
 
 public class MainWindow : Window, IDisposable
 {
-    private string MemImagePath;
+    private string memImagePath;
     private Plugin Plugin;
-    private Configuration Configuration;
-    public MainWindow(Plugin plugin, string memImagePath)
+    private Configuration configuration;
+    public MainWindow(Plugin plugin, string memImgPath)
         : base("AYO##With a hidden ID", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.NoResize)
     {
         SizeConstraints = new WindowSizeConstraints
         {
             MinimumSize = new Vector2(620, 550),
-            MaximumSize = new Vector2(620, 550)
-            //MaximumSize = new Vector2(float.MaxValue, float.MaxValue)
         };
 
-        MemImagePath = memImagePath;
+        memImagePath = memImgPath;
         Plugin = plugin;
-        Configuration = plugin.Configuration;
+        configuration = plugin.Configuration;
     }
 
     public void Dispose() { }
@@ -31,16 +29,16 @@ public class MainWindow : Window, IDisposable
     {
         ImGui.Text($"Settings");
         
-        var supressSnap = Configuration.DisableSnap;
-        if (ImGui.Checkbox("Disable sleep snap", ref supressSnap))
+        var suppressSnap = configuration.DisableSnap;
+        if (ImGui.Checkbox("Disable sleep snap", ref suppressSnap))
         {
-            Configuration.DisableSnap = supressSnap;
-            Configuration.Save();
+            configuration.DisableSnap = suppressSnap;
+            configuration.Save();
         }
         
         ImGui.Spacing();
         
-        var memImage = Plugin.TextureProvider.GetFromFile(MemImagePath).GetWrapOrDefault();
+        var memImage = Plugin.TextureProvider.GetFromFile(memImagePath).GetWrapOrDefault();
         if (memImage != null)
         {
             ImGui.Image(memImage.ImGuiHandle, new Vector2(memImage.Width, memImage.Height));
