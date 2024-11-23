@@ -10,6 +10,7 @@
     <IsPackable>false</IsPackable>
     <Authors>rky</Authors>
     <TargetFramework>net9.0</TargetFramework>
+    <AssemblyVersion>0.0.0.2</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
